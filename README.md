@@ -1,5 +1,5 @@
 # issposition
-Shows the position of the international space station
+A simple web app that shows the position of the international space station (ISS).
 
 ## Attribution
 

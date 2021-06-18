@@ -2,6 +2,7 @@ package tle
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"io"
 	"log"
@@ -22,4 +23,27 @@ func ReadTLEs(r io.Reader) {
 	if err := scanner.Err(); err != nil {
 		log.Fatal(err)
 	}
+}
+
+func ReadTLE(scanner bufio.Scanner) (TLE, error) {
+	// read the name
+	tle := TLE{}
+	if (scanner.Scan()) {
+		tle.Name = scanner.Text()
+	} else {
+		return tle, io.EOF
+	}
+
+	if (scanner.Scan()) {
+		tle.Line1 = scanner.Text()
+	} else {
+		return tle, errors.New("Line 1 missing")
+	}
+
+	if (scanner.Scan()) {
+		tle.Line1 = scanner.Text()
+	} else {
+		return tle, errors.New("Line 2 missing")
+	}
+	return tle, nil
 }

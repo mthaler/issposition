@@ -1,7 +1,9 @@
 # issposition
-A simple web app that shows the position of the international space station (ISS).
+A simple web app that shows the position of the international space station (ISS):
 
 ![ISS position](screenshots/issposition.jpg)
+
+The image is generated on the server, the page refreshes it every two seconds.
 
 ## Attribution
 

@@ -19,17 +19,6 @@ func NewTLE(name string, line1 string, line2 string) TLE {
 	return TLE{Name: name, Line1: line1, Line2: line2}
 }
 
-func ReadTLEs(r io.Reader) {
-	scanner := bufio.NewScanner(r)
-	for scanner.Scan() {
-		fmt.Println(scanner.Text())
-	}
-
-	if err := scanner.Err(); err != nil {
-		log.Fatal(err)
-	}
-}
-
 func ReadTLE(scanner *bufio.Scanner) (TLE, error) {
 	// read the name
 	tle := TLE{}
@@ -51,4 +40,32 @@ func ReadTLE(scanner *bufio.Scanner) (TLE, error) {
 		return tle, errors.New("Line 2 missing")
 	}
 	return tle, nil
+}
+
+func ReadTLEs(r io.Reader) (map[string]TLE, error) {
+	scanner := bufio.NewScanner(r)
+
+	m := make(map[string]TLE)
+
+	for {
+		tle, err := ReadTLE(scanner)
+		if err != nil {
+			if err == io.EOF {
+				return m, nil
+			} else {
+				return m, err
+			}
+		}
+
+		m[tle.Name] = tle
+	}
+
+	for scanner.Scan() {
+		fmt.Println(scanner.Text())
+	}
+
+	if err := scanner.Err(); err != nil {
+		log.Fatal(err)
+	}
+	return m, nil
 }

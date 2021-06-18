@@ -42,10 +42,15 @@ func main() {
 	now := time.Now().UTC()
 	fmt.Println(now)
 
-	println(now.Hour())
-
 	pos, vel := propagate(iss, now)
 	fmt.Println("Position: ", pos, "velocity:", vel)
+
+	gmst := gsTimeFromDate(now)
+	altitude, velocity, latLng := satellite.ECIToLLA(pos, gmst)
+	fmt.Println("altitude: ", altitude, "velocity: ", velocity, "latLng: ", latLng)
+
+	latLngDeg := satellite.LatLongDeg(latLng)
+	fmt.Println("latLngDeg:", latLngDeg)
 
 	fs := http.FileServer(http.Dir("./static"))
 	http.Handle("/", fs)
@@ -59,4 +64,8 @@ func main() {
 
 func propagate(sat satellite.Satellite, t time.Time) (position, velocity satellite.Vector3) {
 	return satellite.Propagate(sat, t.Year(), int(t.Month()), t.Day(), t.Hour(), t.Minute(), t.Second())
+}
+
+func gsTimeFromDate(t time.Time) float64 {
+	return satellite.GSTimeFromDate(t.Year(), int(t.Month()), t.Day(), t.Hour(), t.Minute(), t.Second())
 }

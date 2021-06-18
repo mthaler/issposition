@@ -24,4 +24,5 @@ func CreateImage() {
 
 	dc := gg.NewContext(1600, 800)
 	dc.DrawImage(img, 0, 0)
+	gg.SaveJPG("images/result.jpg", dc.Image(), 90)
 }

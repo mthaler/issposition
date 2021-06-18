@@ -6,13 +6,17 @@ import (
 	"github.com/joshuaferrara/go-satellite"
 	"image"
 	"log"
+	"math"
 	"os"
 )
 
+const w = 1600
+const h = 800
+
 func CreateImage(pos satellite.LatLong) {
-	dc := gg.NewContext(1600, 800)
+	dc := gg.NewContext(w, h)
 	drawMap(dc)
-	drawISS(dc)
+	drawISS(dc, pos)
 	err := gg.SaveJPG("images/result.jpg", dc.Image(), 90)
 	if err != nil {
 		log.Fatal(err)
@@ -35,8 +39,10 @@ func drawMap(dc *gg.Context) {
 	dc.DrawImage(img, 0, 0)
 }
 
-func drawISS(dc *gg.Context) {
-	dc.DrawCircle(800.0, 400.0, 20.0)
+func drawISS(dc *gg.Context, pos satellite.LatLong) {
+	x := w / 2.0 + pos.Longitude * w / (2.0 * math.Pi)
+	y := h / 2.0 - pos.Latitude * h / math.Pi
+	dc.DrawCircle(x, y, 15.0)
 	dc.SetRGB(1.0, 1.0, 1.0)
 	dc.Fill()
 }

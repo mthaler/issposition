@@ -112,14 +112,15 @@ func drawISS(dc *gg.Context, iss satellite.Satellite) {
 		log.Fatal(err)
 	}
 
-	dc.DrawImage(img, 0, 0)
-
 	now := time.Now().UTC()
 	pos, _ := propagate(iss, now)
 	gmst := gsTimeFromDate(now)
 	_, _, latLng := satellite.ECIToLLA(pos, gmst)
 	x, y := toScreen(latLng)
-	dc.DrawCircle(x, y, 15.0)
-	dc.SetRGB(1.0, 1.0, 1.0)
+	dc.DrawCircle(x, y, 20.0)
+	dc.SetRGBA(1.0, 0.0, 0.0, 0.4)
 	dc.Fill()
+
+	dc.DrawImage(img, int(math.Round(x)) - 16, int(math.Round(y)) - 16)
+
 }

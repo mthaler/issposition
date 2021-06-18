@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"fmt"
 	"github.com/joshuaferrara/go-satellite"
 	"github.com/mthaler/iss-position/internal/download"
 	"github.com/mthaler/iss-position/internal/orbit"
@@ -9,6 +10,7 @@ import (
 	"image/jpeg"
 	"log"
 	"net/http"
+	"os"
 )
 
 func main() {
@@ -34,8 +36,15 @@ func main() {
 	http.Handle("/", fs)
 	http.HandleFunc("/map", mapHandler(iss))
 
-	log.Println("Listening on :3000...")
-	err = http.ListenAndServe(":3000", nil)
+	port := "8080"
+
+	args := os.Args
+	if len(args) > 1 {
+		port = args[1]
+	}
+
+	log.Printf("Listening on :%s...\n", port)
+	err = http.ListenAndServe(fmt.Sprintf(":%s", port), nil)
 	if err != nil {
 		log.Fatal(err)
 	}

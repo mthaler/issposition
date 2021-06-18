@@ -1,32 +1,22 @@
 package main
 
 import (
-	"fmt"
 	"github.com/joshuaferrara/go-satellite"
 	"github.com/mthaler/iss-position/internal/download"
 	"github.com/mthaler/iss-position/internal/orbit"
 	"github.com/mthaler/iss-position/internal/tle"
 	"log"
 	"net/http"
-	"os"
 )
 
 func main() {
 	fileUrl := "https://www.celestrak.com/NORAD/elements/stations.txt"
-	filePath := "stations.txt"
-	err := download.DownloadFile(filePath, fileUrl)
+	buf, err := download.Download(fileUrl)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("Downloaded: " + fileUrl)
 
-	file, err := os.Open(filePath)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer file.Close()
-
-	tles, err := tle.ReadTLEs(file)
+	tles, err := tle.ReadTLEs(buf)
 	if err != nil {
 		panic(err)
 	}

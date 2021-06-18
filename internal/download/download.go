@@ -1,36 +1,31 @@
 package download
 
 import (
+	"bytes"
 	"fmt"
 	"io"
 	"net/http"
-	"os"
 )
 
-// DownloadFile will download a url to a local file. It's efficient because it will
-// write as it downloads and not load the whole file into memory.
-func DownloadFile(filepath string, url string) error {
-
-	// Create the file
-	out, err := os.Create(filepath)
-	if err != nil {
-		return err
-	}
-	defer out.Close()
-
+func Download(url string) (*bytes.Buffer, error) {
 	// Get the data
 	resp, err := http.Get(url)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	defer resp.Body.Close()
 
 	// Check server response
 	if resp.StatusCode != http.StatusOK {
-		return fmt.Errorf("bad status: %s", resp.Status)
+		return nil, fmt.Errorf("bad status: %s", resp.Status)
 	}
 
-	// Write the body to file
-	_, err = io.Copy(out, resp.Body)
-	return err
+	b := new(bytes.Buffer)
+	_, err = io.Copy(b, resp.Body)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return b, nil
 }

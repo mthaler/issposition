@@ -34,8 +34,13 @@ func gsTimeFromDate(t time.Time) float64 {
 }
 
 func toScreen(latLng satellite.LatLong) (float64, float64) {
-	x := w / 2.0 + latLng.Longitude *w / (2.0 * math.Pi)
-	y := h / 2.0 - latLng.Latitude *h/ math.Pi
+	x := w / 2.0 + latLng.Longitude * w / (2.0 * math.Pi)
+	if x < 0.0 {
+		x = x + w
+	} else if x > w {
+		x = x - w
+	}
+	y := h / 2.0 - latLng.Latitude * h / math.Pi
 	return x, y
 }
 
@@ -74,17 +79,24 @@ func drawOrbit(dc *gg.Context, iss satellite.Satellite) {
 	doDraw := false
 	dc.SetRGBA(1.0, 1.0, 1.0, 0.6)
 	dc.SetLineWidth(5)
+	var previousX float64
 	for t.Before(end) {
 		pos, _ := propagate(iss, t)
 		gmst := gsTimeFromDate(t)
 		_, _, latLng := satellite.ECIToLLA(pos, gmst)
 		x, y := toScreen(latLng)
+		fmt.Println("lng:", latLng.Longitude, "lat:", latLng.Latitude, "x:", x, "y:", y)
 		if doDraw {
-			dc.LineTo(x, y)
+			if math.Abs(x - previousX) < w / 2.0 {
+				dc.LineTo(x, y)
+			} else {
+				dc.MoveTo(x, y)
+			}
 		} else {
 			dc.MoveTo(x, y)
 		}
 		doDraw = true
+		previousX = x
 		t = t.Add(time.Minute)
 	}
 	dc.Stroke()

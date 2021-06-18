@@ -85,7 +85,6 @@ func drawOrbit(dc *gg.Context, iss satellite.Satellite) {
 		gmst := gsTimeFromDate(t)
 		_, _, latLng := satellite.ECIToLLA(pos, gmst)
 		x, y := toScreen(latLng)
-		fmt.Println("lng:", latLng.Longitude, "lat:", latLng.Latitude, "x:", x, "y:", y)
 		if doDraw {
 			if math.Abs(x - previousX) < w / 2.0 {
 				dc.LineTo(x, y)

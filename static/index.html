@@ -9,6 +9,16 @@
     </head>
     <body>
         <h1>ISS Position:</h1>
-        <img src="/map" alt="ISS position">
+        <img id="map" src="/map" alt="ISS position">
+        <script type="text/JavaScript">
+            window.onload = function() {
+                const src = document.getElementById("map").src;
+                function reloadMap() {
+                    document.getElementById("map").src = `${src}?v=${new Date().getTime()}`;
+                    setTimeout(reloadMap, 2000);
+                }
+                setTimeout(reloadMap, 2000);
+            };
+        </script>
     </body>
 </html>

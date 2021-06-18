@@ -14,16 +14,13 @@ import (
 const w = 1600
 const h = 800
 
-func CreateImage(iss satellite.Satellite) {
+func CreateImage(iss satellite.Satellite) image.Image {
 	dc := gg.NewContext(w, h)
 	drawMap(dc)
 	drawLatLngGrid(dc)
 	drawOrbit(dc, iss)
 	drawISS(dc, iss)
-	err := gg.SaveJPG("images/result.jpg", dc.Image(), 90)
-	if err != nil {
-		log.Fatal(err)
-	}
+	return dc.Image()
 }
 
 func propagate(sat satellite.Satellite, t time.Time) (position, velocity satellite.Vector3) {

@@ -53,7 +53,7 @@ func main() {
 	latLngDeg := satellite.LatLongDeg(latLng)
 	fmt.Println("latLngDeg:", latLngDeg)
 
-	orbit.CreateImage()
+	orbit.CreateImage(latLng)
 
 	fs := http.FileServer(http.Dir("./static"))
 	http.Handle("/", fs)

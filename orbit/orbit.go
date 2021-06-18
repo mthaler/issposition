@@ -24,5 +24,11 @@ func CreateImage() {
 
 	dc := gg.NewContext(1600, 800)
 	dc.DrawImage(img, 0, 0)
-	gg.SaveJPG("images/result.jpg", dc.Image(), 90)
+	dc.DrawCircle(800.0, 400.0, 20.0)
+	dc.SetRGB(1.0, 1.0, 1.0)
+	dc.Fill()
+	err = gg.SaveJPG("images/result.jpg", dc.Image(), 90)
+	if err != nil {
+		log.Fatal(err)
+	}
 }

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/joshuaferrara/go-satellite"
 	"github.com/mthaler/iss-position/download"
+	"github.com/mthaler/iss-position/orbit"
 	"github.com/mthaler/iss-position/tle"
 	"log"
 	"net/http"
@@ -51,6 +52,8 @@ func main() {
 
 	latLngDeg := satellite.LatLongDeg(latLng)
 	fmt.Println("latLngDeg:", latLngDeg)
+
+	orbit.CreateImage()
 
 	fs := http.FileServer(http.Dir("./static"))
 	http.Handle("/", fs)

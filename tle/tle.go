@@ -6,12 +6,17 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"strings"
 )
 
 type TLE struct {
 	Name string
 	Line1 string
 	Line2 string
+}
+
+func NewTLE(name string, line1 string, line2 string) TLE {
+	return TLE{Name: name, Line1: line1, Line2: line2}
 }
 
 func ReadTLEs(r io.Reader) {
@@ -25,23 +30,23 @@ func ReadTLEs(r io.Reader) {
 	}
 }
 
-func ReadTLE(scanner bufio.Scanner) (TLE, error) {
+func ReadTLE(scanner *bufio.Scanner) (TLE, error) {
 	// read the name
 	tle := TLE{}
 	if (scanner.Scan()) {
-		tle.Name = scanner.Text()
+		tle.Name = strings.TrimSpace(scanner.Text())
 	} else {
 		return tle, io.EOF
 	}
 
 	if (scanner.Scan()) {
-		tle.Line1 = scanner.Text()
+		tle.Line1 = strings.TrimSpace(scanner.Text())
 	} else {
 		return tle, errors.New("Line 1 missing")
 	}
 
 	if (scanner.Scan()) {
-		tle.Line1 = scanner.Text()
+		tle.Line2 = strings.TrimSpace(scanner.Text())
 	} else {
 		return tle, errors.New("Line 2 missing")
 	}

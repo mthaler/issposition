@@ -101,6 +101,19 @@ func drawOrbit(dc *gg.Context, iss satellite.Satellite) {
 }
 
 func drawISS(dc *gg.Context, iss satellite.Satellite) {
+	file, err := os.Open("images/space-station.png")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer file.Close()
+
+	img, _, err := image.Decode(file)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	dc.DrawImage(img, 0, 0)
+
 	now := time.Now().UTC()
 	pos, _ := propagate(iss, now)
 	gmst := gsTimeFromDate(now)

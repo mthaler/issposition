@@ -24,6 +24,20 @@ func CreateImage(iss satellite.Satellite) {
 	}
 }
 
+func propagate(sat satellite.Satellite, t time.Time) (position, velocity satellite.Vector3) {
+	return satellite.Propagate(sat, t.Year(), int(t.Month()), t.Day(), t.Hour(), t.Minute(), t.Second())
+}
+
+func gsTimeFromDate(t time.Time) float64 {
+	return satellite.GSTimeFromDate(t.Year(), int(t.Month()), t.Day(), t.Hour(), t.Minute(), t.Second())
+}
+
+func toScreen(latLng satellite.LatLong) (float64, float64) {
+	x := w/ 2.0 + latLng.Longitude *w / (2.0 * math.Pi)
+	y := h/ 2.0 - latLng.Latitude *h/ math.Pi
+	return x, y
+}
+
 func drawMap(dc *gg.Context) {
 	file, err := os.Open("images/map.jpg")
 	if err != nil {
@@ -45,17 +59,8 @@ func drawISS(dc *gg.Context, iss satellite.Satellite) {
 	pos, _ := propagate(iss, now)
 	gmst := gsTimeFromDate(now)
 	_, _, latLng := satellite.ECIToLLA(pos, gmst)
-	x := w/ 2.0 + latLng.Longitude *w/ (2.0 * math.Pi)
-	y := h/ 2.0 - latLng.Latitude *h/ math.Pi
+	x, y := toScreen(latLng)
 	dc.DrawCircle(x, y, 15.0)
 	dc.SetRGB(1.0, 1.0, 1.0)
 	dc.Fill()
-}
-
-func propagate(sat satellite.Satellite, t time.Time) (position, velocity satellite.Vector3) {
-	return satellite.Propagate(sat, t.Year(), int(t.Month()), t.Day(), t.Hour(), t.Minute(), t.Second())
-}
-
-func gsTimeFromDate(t time.Time) float64 {
-	return satellite.GSTimeFromDate(t.Year(), int(t.Month()), t.Day(), t.Hour(), t.Minute(), t.Second())
 }

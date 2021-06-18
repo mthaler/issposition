@@ -40,8 +40,8 @@ func drawMap(dc *gg.Context) {
 }
 
 func drawISS(dc *gg.Context, pos satellite.LatLong) {
-	x := w / 2.0 + pos.Longitude * w / (2.0 * math.Pi)
-	y := h / 2.0 - pos.Latitude * h / math.Pi
+	x := w/ 2.0 + pos.Longitude *w/ (2.0 * math.Pi)
+	y := h/ 2.0 - pos.Latitude *h/ math.Pi
 	dc.DrawCircle(x, y, 15.0)
 	dc.SetRGB(1.0, 1.0, 1.0)
 	dc.Fill()

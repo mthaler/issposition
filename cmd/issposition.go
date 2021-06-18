@@ -3,9 +3,9 @@ package main
 import (
 	"fmt"
 	"github.com/joshuaferrara/go-satellite"
-	"github.com/mthaler/iss-position/download"
-	"github.com/mthaler/iss-position/orbit"
-	"github.com/mthaler/iss-position/tle"
+	"github.com/mthaler/iss-position/internal/download"
+	"github.com/mthaler/iss-position/internal/orbit"
+	"github.com/mthaler/iss-position/internal/tle"
 	"log"
 	"net/http"
 	"os"

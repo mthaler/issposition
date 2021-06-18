@@ -39,8 +39,10 @@ func main() {
 	iss := satellite.TLEToSat(tle.Line1, tle.Line2, "wgs84")
 	fmt.Println(iss)
 
-	now := time.Now()
+	now := time.Now().UTC()
 	fmt.Println(now)
+
+	println(now.Hour())
 
 	pos, vel := propagate(iss, now)
 	fmt.Println("Position: ", pos, "velocity:", vel)

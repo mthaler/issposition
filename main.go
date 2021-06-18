@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/joshuaferrara/go-satellite"
 	"github.com/mthaler/iss-position/download"
 	"github.com/mthaler/iss-position/tle"
 	"log"
@@ -24,7 +25,18 @@ func main() {
 	}
 	defer file.Close()
 
-	tle.ReadTLEs(file)
+	tles, err := tle.ReadTLEs(file)
+	if err != nil {
+		panic(err)
+	}
+
+	tle, ok := tles["ISS (ZARYA)"]
+	if !ok {
+		panic("ISS TLE not found")
+	}
+
+	sat := satellite.ParseTLE(tle.Line1, tle.Line2, "wgs84")
+	fmt.Println(sat)
 
 	fs := http.FileServer(http.Dir("./static"))
 	http.Handle("/", fs)

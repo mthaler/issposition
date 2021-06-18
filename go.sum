@@ -1,0 +1,5 @@
+github.com/joshuaferrara/go-satellite v0.0.0-20200525195557-fa7463750f00 h1:6mahtGSOtz+N3SDuXn6uIU0B5Q7B6wzkgpChNiso1vs=
+github.com/joshuaferrara/go-satellite v0.0.0-20200525195557-fa7463750f00/go.mod h1:3ISM67Pu5uE12rJyoPPdwBukcj8V/8zfCRCa03zWBfU=
+github.com/onsi/ginkgo v1.2.1-0.20160509182050-5437a97bf824/go.mod h1:lLunBs/Ym6LB5Z9jYTR76FiuTmxDTDusOGeTQH+WWjE=
+github.com/onsi/gomega v0.0.0-20160516222431-c73e51675ad2/go.mod h1:C1qb7wdrVGGVU+Z6iS04AVkA3Q65CEZX59MT0QO5uiA=
+gopkg.in/yaml.v2 v2.0.0-20160301204022-a83829b6f129/go.mod h1:JAlM8MvJe8wmxCU4Bli9HhUf9+ttbYbLASfIpnQbh74=

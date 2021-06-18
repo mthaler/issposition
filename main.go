@@ -1,9 +1,9 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
 	"github.com/mthaler/iss-position/download"
+	"github.com/mthaler/iss-position/tle"
 	"log"
 	"os"
 )
@@ -23,12 +23,5 @@ func main() {
 	}
 	defer file.Close()
 
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		fmt.Println(scanner.Text())
-	}
-
-	if err := scanner.Err(); err != nil {
-		log.Fatal(err)
-	}
+	tle.ReadTLEs(file)
 }

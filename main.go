@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 )
 
 func main() {
@@ -38,7 +39,10 @@ func main() {
 	iss := satellite.TLEToSat(tle.Line1, tle.Line2, "wgs84")
 	fmt.Println(iss)
 
-	pos, vel := satellite.Propagate(iss, 2021, 6, 18, 9, 22, 0)
+	now := time.Now()
+	fmt.Println(now)
+
+	pos, vel := propagate(iss, now)
 	fmt.Println("Position: ", pos, "velocity:", vel)
 
 	fs := http.FileServer(http.Dir("./static"))
@@ -49,4 +53,8 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+func propagate(sat satellite.Satellite, t time.Time) (position, velocity satellite.Vector3) {
+	return satellite.Propagate(sat, t.Year(), int(t.Month()), t.Day(), t.Hour(), t.Minute(), t.Second())
 }

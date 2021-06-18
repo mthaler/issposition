@@ -17,6 +17,7 @@ const h = 800
 func CreateImage(iss satellite.Satellite) {
 	dc := gg.NewContext(w, h)
 	drawMap(dc)
+	drawOrbit(dc, iss)
 	drawISS(dc, iss)
 	err := gg.SaveJPG("images/result.jpg", dc.Image(), 90)
 	if err != nil {
@@ -33,8 +34,8 @@ func gsTimeFromDate(t time.Time) float64 {
 }
 
 func toScreen(latLng satellite.LatLong) (float64, float64) {
-	x := w/ 2.0 + latLng.Longitude *w / (2.0 * math.Pi)
-	y := h/ 2.0 - latLng.Latitude *h/ math.Pi
+	x := w / 2.0 + latLng.Longitude *w / (2.0 * math.Pi)
+	y := h / 2.0 - latLng.Latitude *h/ math.Pi
 	return x, y
 }
 
@@ -63,4 +64,28 @@ func drawISS(dc *gg.Context, iss satellite.Satellite) {
 	dc.DrawCircle(x, y, 15.0)
 	dc.SetRGB(1.0, 1.0, 1.0)
 	dc.Fill()
+}
+
+func drawOrbit(dc *gg.Context, iss satellite.Satellite) {
+	now := time.Now().UTC()
+	start :=  now.Add(-time.Minute * 60)
+	end := now.Add(time.Minute * 60)
+	t := start
+	doDraw := false
+	dc.SetRGBA(1.0, 1.0, 1.0, 0.6)
+	dc.SetLineWidth(5)
+	for t.Before(end) {
+		pos, _ := propagate(iss, t)
+		gmst := gsTimeFromDate(t)
+		_, _, latLng := satellite.ECIToLLA(pos, gmst)
+		x, y := toScreen(latLng)
+		if doDraw {
+			dc.LineTo(x, y)
+		} else {
+			dc.MoveTo(x, y)
+		}
+		doDraw = true
+		t = t.Add(time.Minute)
+	}
+	dc.Stroke()
 }

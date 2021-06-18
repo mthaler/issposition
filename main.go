@@ -35,8 +35,11 @@ func main() {
 		panic("ISS TLE not found")
 	}
 
-	sat := satellite.ParseTLE(tle.Line1, tle.Line2, "wgs84")
-	fmt.Println(sat)
+	iss := satellite.TLEToSat(tle.Line1, tle.Line2, "wgs84")
+	fmt.Println(iss)
+
+	pos, vel := satellite.Propagate(iss, 2021, 6, 18, 9, 22, 0)
+	fmt.Println("Position: ", pos, "velocity:", vel)
 
 	fs := http.FileServer(http.Dir("./static"))
 	http.Handle("/", fs)

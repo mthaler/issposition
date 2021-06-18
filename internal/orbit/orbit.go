@@ -1,7 +1,6 @@
 package orbit
 
 import (
-	"fmt"
 	"github.com/fogleman/gg"
 	"github.com/joshuaferrara/go-satellite"
 	"image"
@@ -49,12 +48,11 @@ func drawMap(dc *gg.Context) {
 	}
 	defer file.Close()
 
-	img, fmtName, err := image.Decode(file)
+	img, _, err := image.Decode(file)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Println("Format:", fmtName)
 	dc.DrawImage(img, 0, 0)
 }
 

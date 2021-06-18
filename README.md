@@ -1,4 +1,4 @@
-# iss-position
+# issposition
 Shows the position of the international space station
 
 ## Attribution

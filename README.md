@@ -7,7 +7,7 @@ TLEs are downloaded from [Celestrak](https://www.celestrak.com) when the applica
 
 This is just a fun project I decided to do after reading *Diary of an Apprentice Astronaut* by *Samantha Cristoforetti*. Rendering the map on the server every two seconds is quite inefficient and some features are missing, e.g. reloading the TLE file periodically.
 
-A lot more information about the ISS, its orbit, at what time it can be seen in the sky can be found on the Heavens-Above [webpage](https://www.heavens-above.com/).
+A lot more information about the ISS, its orbit, at what time it can be seen in the sky, can be found on the Heavens-Above [webpage](https://www.heavens-above.com/).
 
 ## Usage
 
